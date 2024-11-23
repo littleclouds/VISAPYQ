@@ -2,28 +2,22 @@
 Find the minimum time at which there were maximum guests at the party. Note that entries in the register are not in any order.
 Note: Guests are leaving after the exit times. '''
 
-
-class Solution{
-	public int[] findMaxGuests(int[] arrl, int[] exit, int n) {
-        Arrays.sort(arrl);
-        Arrays.sort(exit);
-        int guests_in = 1, max_guests = 1, time = arrl[0];
-        int i = 1, j = 0;
-        while (i < n && j < n){
-            if (arrl[i] <= exit[j]){
-                guests_in++;
-            if (guests_in > max_guests){
-                max_guests = guests_in;
-                time = arrl[i];
-            }
-                i++;
-            }
-            else{ 
-            guests_in--;
-            j++;
-            }
-        }
-    
-        return new int[]{max_guests,time};
-	}
-}
+class Solution:
+    def findMaxGuests(self, Entry, Exit, N):
+        start = min(Entry)
+        end = max(Exit)
+        time = [0]*(end-start+2)
+        res_t = cur_t = 0
+        res_g = cur_g = 0
+        for s, e in zip(Entry, Exit):
+            s-=start
+            e -=start
+            time[s] +=1
+            time[e+1] -=1
+        for t, g in enumerate(time):
+            t+=start
+            cur_g += g
+            if cur_g > res_g:
+                res_g = cur_g
+                res_t = t
+        return [res_g, res_t]
